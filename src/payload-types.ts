@@ -26,6 +26,21 @@ export interface User {
   id: number;
   name?: string | null;
   role?: ('Admin' | 'Corretor' | 'Marketing' | 'Superintendente' | 'RH' | 'CAC')[] | null;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -70,6 +85,17 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlock".
+ */
+export interface QuoteBlock {
+  quoteHeader: string;
+  quoteText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Quote';
 }
 
 

@@ -39,10 +39,5 @@
   },
   "engines": {
     "node": ">=18.19.0"
-  },
-  "overrides": {
-    "payload@latest": {
-      "sharp": "^0.33.2"
-    }
   }
 }

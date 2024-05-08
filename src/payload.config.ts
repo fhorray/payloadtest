@@ -3,10 +3,13 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload/config'
+
 // import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { Users } from './collections/Users'
+import { Media } from './collections/Media'
+import { Properties } from './collections/Properties'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -15,7 +18,21 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users],
+  collections: [Users, Media, Properties],
+  localization: {
+    locales: [
+      {
+        label: 'English',
+        code: 'en',
+      },
+      {
+        label: 'Português',
+        code: 'pt',
+      },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   editor: lexicalEditor({}),
   // plugins: [payloadCloud()], // TODO: Re-enable when cloud supports 3.0
   secret: process.env.PAYLOAD_SECRET || '',
