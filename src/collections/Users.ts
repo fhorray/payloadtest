@@ -1,9 +1,8 @@
-import TestComponent from '@/components/TestComponent'
 import { BlocksFeature, LexicalBlock, lexicalEditor } from '@payloadcms/richtext-lexical'
-import { email } from 'payload/fields/validations'
-import payload from 'payload'
 
-import type { CollectionAfterReadHook, CollectionConfig } from 'payload/types'
+import type { CollectionConfig } from 'payload/types'
+import { isAdminFieldLevel } from '@/access/isAdmin'
+import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 
 const QuoteBlock: LexicalBlock = {
   slug: 'Quote', // required
@@ -31,22 +30,64 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   access: {
-    read: ({ req: { user }, id }) => {
-      return true
-    },
+    read: isAdminOrSelf,
+    update: isAdminOrSelf,
   },
 
   fields: [
+    // Name
     {
       name: 'name',
       type: 'text',
     },
+
+    // Role
     {
       name: 'role',
+      // Save this field to JWS so we can use from "req.user"
+      saveToJWT: true,
       type: 'select',
-      options: ['Admin', 'Corretor', 'Marketing', 'Superintendente', 'RH', 'CAC'],
+      defaultValue: ['editor'],
+      options: [
+        {
+          value: 'admin',
+          label: 'Admin',
+        },
+        {
+          value: 'editor',
+          label: 'Editor',
+        },
+        {
+          value: 'corretor',
+          label: 'Corretor',
+        },
+        {
+          value: 'marketing',
+          label: 'Marketing',
+        },
+        {
+          value: 'superintendente',
+          label: 'Superintendente',
+        },
+        {
+          value: 'rh',
+          label: 'RH',
+        },
+        {
+          value: 'cac',
+          label: 'CAC',
+        },
+      ],
       hasMany: true,
+
+      // Who can Edit this field?
+      access: {
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel,
+      },
     },
+
+    // Bio
     {
       name: 'bio',
       type: 'richText',
@@ -59,6 +100,8 @@ export const Users: CollectionConfig = {
         ],
       }),
     },
+
+    // Photo
     {
       name: 'image',
       type: 'upload',
