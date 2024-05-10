@@ -15,18 +15,32 @@ export const Properties: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'titulo',
+    // This options create a collection group & organize inside the menu sidebar. like the Collections One
+    // group: { en: 'Collections', pt: 'Coleções' },
   },
   fields: [
     // Title - Text
     {
       name: 'titulo',
       type: 'text',
+      label: {
+        en: 'Title',
+        pt: 'Titulos',
+      },
+      admin: {
+        placeholder: { en: 'Enter title', pt: 'Insira o titulo' },
+      },
+      localized: true,
     },
 
     // Description - Rich Text
     {
       name: 'descricao',
-      label: 'Descrição',
+      label: {
+        en: 'Description',
+        pt: 'Descrição',
+      },
+      localized: true,
       type: 'richText',
     },
 
@@ -106,7 +120,6 @@ export const Properties: CollectionConfig = {
     // Collapsible
     {
       label: ({ data }) => {
-        console.log('COLAPSE DATA: ', data?.title)
         return data?.title || 'Untitled'
       },
       type: 'collapsible',

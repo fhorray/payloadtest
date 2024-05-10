@@ -1,7 +1,7 @@
 import { BlocksFeature, LexicalBlock, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 import type { CollectionConfig } from 'payload/types'
-import { isAdminFieldLevel } from '@/access/isAdmin'
+import { isAdmin, isAdminFieldLevel } from '@/access/isAdmin'
 import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 
 const QuoteBlock: LexicalBlock = {
@@ -25,27 +25,51 @@ const QuoteBlock: LexicalBlock = {
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: { en: 'User', pt: 'Usuário' },
+    plural: { en: 'Users', pt: 'Usuários' },
+  },
+
   admin: {
     useAsTitle: 'email',
+    // defaultColumns: ['name', 'email']
   },
   auth: true,
-  access: {
-    read: isAdminOrSelf,
-    update: isAdminOrSelf,
-  },
+
+  // {
+  //   verify: {
+  //     generateEmailHTML: ({ req, token, user }) => {
+  //       // Use the token provided to allow your user to verify their account
+  //       const url = `http://localhost:3000/verify?token=${token}`
+
+  //       return `Hey ${user.email}, verify your email by clicking here: ${url}`
+  //     },
+  //   },
+  // },
+
+  // access: {
+  //   create: isAdmin,
+  //   read: isAdminOrSelf,
+  //   update: isAdminOrSelf,
+  //   delete: isAdmin,
+  // },
 
   fields: [
     // Name
-    {
-      name: 'name',
-      type: 'text',
-    },
+    // {
+    //   name: 'name',
+    //   type: 'text',
+    // },
 
     // Role
     {
       name: 'role',
+      label: {
+        en: 'Roles',
+        pt: 'Funções',
+      },
       // Save this field to JWS so we can use from "req.user"
-      saveToJWT: true,
+      // saveToJWT: true,
       type: 'select',
       defaultValue: ['editor'],
       options: [
@@ -81,31 +105,11 @@ export const Users: CollectionConfig = {
       hasMany: true,
 
       // Who can Edit this field?
-      access: {
-        create: isAdminFieldLevel,
-        update: isAdminFieldLevel,
-      },
-    },
-
-    // Bio
-    {
-      name: 'bio',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures,
-          BlocksFeature({
-            blocks: [QuoteBlock],
-          }),
-        ],
-      }),
-    },
-
-    // Photo
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
+      // access: {
+      //   create: isAdminFieldLevel,
+      //   read: isAdminFieldLevel,
+      //   update: isAdminFieldLevel,
+      // },
     },
   ],
 }

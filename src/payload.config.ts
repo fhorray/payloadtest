@@ -11,6 +11,11 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Properties } from './collections/Properties'
 
+import { en } from 'payload/i18n/en'
+import { pt } from 'payload/i18n/pt'
+import { es } from 'payload/i18n/es'
+import { tr } from 'payload/i18n/tr'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -19,20 +24,12 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Users, Media, Properties],
-  localization: {
-    locales: [
-      {
-        label: 'English',
-        code: 'en',
-      },
-      {
-        label: 'Português',
-        code: 'pt',
-      },
-    ],
-    defaultLocale: 'en',
-    fallback: true,
+
+  i18n: {
+    fallbackLanguage: 'en',
+    supportedLanguages: { en, pt, es, tr },
   },
+
   editor: lexicalEditor({}),
   // plugins: [payloadCloud()], // TODO: Re-enable when cloud supports 3.0
   secret: process.env.PAYLOAD_SECRET || '',
